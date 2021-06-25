@@ -8,6 +8,7 @@ mongoose.connect('mongodb://localhost:27017/shopApp', { useNewUrlParser: true, u
         console.log(err)
     })
 
+
 const productSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -34,17 +35,18 @@ const productSchema = new mongoose.Schema({
             default: 0
         }
     },
-    size: {
+    size : {
         type: String,
-        enum: ['S', 'M', 'L']
+        enum:['S', 'M', 'L']
     }
 
 });
 
-// productSchema.methods.greet = function () {
-//     console.log("HELLLO!!! HI!! HOWDY!!! ")
-//     console.log(`- from ${this.name}`)
-// }
+
+productSchema.methods.greet = function () {
+    console.log("HELLLO!!! HI!! HOWDY!!! ")
+    console.log(`- from ${this.name}`)
+}
 
 productSchema.methods.toggleOnSale = function () {
     this.onSale = !this.onSale;
@@ -57,22 +59,29 @@ productSchema.methods.addCategory = function (newCat) {
     return this.save();
 }
 
+
 productSchema.statics.fireSale = function () {
     return this.updateMany({}, { onSale: true, price: 0 })
 }
 
 
+productSchema.statics.fireSale = function() {
+    return this.update
+}
+
 const Product = mongoose.model('Product', productSchema);
 
 
 const findProduct = async () => {
-    const foundProduct = await Product.findOne({ name: 'Mountain Bike' });
+    const foundProduct = await Product.findOne({ name: 'Cycling Jerse' });
     console.log(foundProduct)
     await foundProduct.toggleOnSale();
     console.log(foundProduct)
     await foundProduct.addCategory('Outdoors')
     console.log(foundProduct)
 }
+
+
 
 // Product.fireSale().then(res => console.log(res))
 
